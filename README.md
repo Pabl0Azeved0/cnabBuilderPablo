@@ -1,74 +1,67 @@
-# Desafio tecnico leitor de arquivos CNAB
+# CNAB File Processor
 
-Este desafio tem a proposta de melhorar uma CI que le arquivos cnab.
-O arquivo CNAB (Comunicação Nacional de Boleto) não se refere a um formato específico de arquivo, mas sim a um padrão de comunicação utilizado no Brasil para troca de informações entre instituições financeiras e empresas. O CNAB é um acrônimo para "Centro Nacional de Automação Bancária", e o termo geralmente está associado aos arquivos de remessa e retorno utilizados em transações bancárias, especialmente relacionadas a boletos bancários.
+This project processes CNAB files, allowing you to search for specific companies or segments and optionally export the results to a JSON file.
 
-Os arquivos CNAB são utilizados para transmitir informações sobre transações financeiras entre empresas e bancos de forma eletrônica. Eles seguem um padrão estabelecido pela Febraban (Federação Brasileira de Bancos), que define a estrutura e o layout dos arquivos para garantir a interoperabilidade entre diferentes sistemas bancários e empresas.
+## Installation
 
-Os arquivos CNAB podem ser de diversos tipos, dependendo da finalidade da transação, como CNAB 240 e CNAB 400, por exemplo. O CNAB 240 é mais comum para transações mais modernas, enquanto o CNAB 400 é um formato mais antigo.
+Make sure you have Node.js installed. Clone the repository and install the dependencies:
 
-Em resumo, o arquivo CNAB é um padrão utilizado para facilitar a comunicação e a troca de informações entre empresas e instituições financeiras no contexto de transações bancárias no Brasil.
+<code>
+git clone <repository-url>
+cd <repository-directory>
+npm install
+</code>
 
-Um CNAB é um arquivo posicional, sendo que cabeçalho é as duas primeiras linhas do arquivo e seu rodapé as duas ultimas.
+## Usage
 
-Ele é dividido por segmentos *P*, *Q* e *R*, cada linha começa com um codigo que tem no final o tipo de segmento:
+You can run the project using the following command:
 
-```
-0010001300002Q 012005437734000407NTT BRASIL COMERCIO E SERVICOS DE TECNOLAVENIDA DOUTOR CHUCRI ZAIDAN, 1240 ANDARVILA SAO FRANCI04711130SAO PAULO      SP0000000000000000                                        000
-```
-Neste exemplo o **Q** aparece na posição/coluna 14, cada posição representa algo dentro do arquivo cnab.
+<code>
+npm start -- -s <search-type> -v <search-value> [-p <path-to-file>] [-e]
+</code>
 
+### Options
 
-hoje ao rodar:
+- `-s, --search <search-type>`: Defines the type of search. Possible values are `empresa` (company) and `segmento` (segment).
+- `-v, --value <search-value>`: The value to search for in the file.
+- `-p, --path <path-to-file>`: The path to the CNAB file. If not specified, it defaults to `cnabExample.rem`.
+- `-e, --exportJson`: Export the search results to a JSON file named `searchResult.json`.
 
-```bash
-node cnabRows.js
-```
+### Examples
 
-temos o seguinte output:
+Search for a company named "DO BRASIL" and export results to JSON:
 
-```bash
-node cnabRows.js --help
-Uso: cnabRows.js [options]
+<code>
+npm start -- -s empresa -v "DO BRASIL" -e
+</code>
 
-Opções:
-      --help      Exibe ajuda                                         [booleano]
-      --version   Exibe a versão                                      [booleano]
-  -f, --from      posição inicial de pesquisa da linha do Cnab
-                                                          [número] [obrigatório]
-  -t, --to        posição final de pesquisa da linha do Cnab
-                                                          [número] [obrigatório]
-  -s, --segmento  tipo de segmento                        [string] [obrigatório]
+Search for a segment value "70000172" in the default file:
 
-Exemplos:
-  cnabRows.js -f 21 -t 34 -s p  lista a linha e campo que from e to do cnab
-```
+<code>
+npm start -- -s segmento -v 70000172
+</code>
 
-hoje a ferramenta busca uma posição e loga isso no terminal.
+Search for a company named "MARIO" in a specified file:
 
-**Desafio consiste**
+<code>
+npm start -- -s empresa -v "MARIO" -p /path/to/your/cnabExample.rem -e
+</code>
 
-**1. Leitura de Arquivo CNAB:**
-   - Permitir que o usuário forneça o caminho do arquivo CNAB pela linha de comando (CLI).
-   - O campo do arquivo é opcional; caso não seja especificado, o programa deve informar ao usuário que será utilizado um arquivo padrão.
+## Project Structure
 
-**2. Busca por Segmentos:**
-   - Implementar a capacidade de buscar por segmentos específicos no arquivo CNAB.
-   - Exibir o nome completo das empresas associadas ao segmento informado.
+- `configs/`: Contains configuration files.
+- `cnab/`: Contains CNAB file handling logic.
+- `utils/`: Contains utility functions and classes.
+- `index.js`: The main entry point of the application.
 
-**3. Pesquisa por Nome da Empresa:**
-   - Desenvolver uma funcionalidade que permita a busca por nome de empresa no arquivo CNAB.
-   - Mostrar o nome completo da empresa, não apenas o fragmento usado na pesquisa.
-   - Indicar a posição exata onde a empresa foi encontrada e informar a qual segmento ela pertence.
+## Error Handling
 
-**4. Exportação para JSON:**
-   - Criar um novo arquivo em formato JSON contendo as informações essenciais:
-      - precisa ser uma nova opção no CLI
-      - Nome da empresa.
-      - Endereço completo (incluindo avenida, rua e CEP).
-      - Posições no arquivo CNAB onde as informações foram localizadas.
+Errors are handled and logged to the console. If the file is not found or if there are issues with the file format, appropriate error messages will be displayed.
 
-**Bonus** O candidato tem total liberdade de mudar a estrutura atual desse projeto, a ideía é ver a criatividade de resolver esse problema.
+## Contributing
 
-Este desafio visa avaliar suas habilidades de manipulação de arquivos, busca eficiente de dados e geração de saída estruturada em um formato JSON. Boa sorte!
+Feel free to open issues or submit pull requests if you have any improvements or fixes.
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
