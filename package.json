@@ -1,12 +1,36 @@
 {
   "name": "cnabBuilder",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/gadielkalleb/cnabBuilder.git",
+  "description": "A tool for processing CNAB files with CLI support for searching and exporting data.",
+  "main": "cnabRows.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gadielkalleb/cnabBuilder.git"
+  },
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "chalk": "^4.1.0",
     "yargs": "^16.2.0"
+  },
+  "scripts": {
+    "start": "node cnabRows.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CNAB",
+    "CLI",
+    "Node.js",
+    "file-processing",
+    "JSON-export"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0"
   }
 }
